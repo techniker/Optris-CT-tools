@@ -163,3 +163,52 @@ Polling: --mode poll --poll-interval 0.2
 | `--ui curses` | Full-screen terminal UI (default) |
 | `--ui plain`  | Line-based console output         |
 | `--ui none`   | No local output                   |
+
+
+Example:
+
+```
+Optris CT | Infrared temperature sensor readout (q = quit)                                                                                                                                           
+                                                                                                                                                                                                     
+Process temperature:                                                                                                                                                                                 
+20.8 °C                              20.8 °C                                                                                                                                                         
+                                                                                                                                                                                                     
+Parameter                                                                                                                                                                                            
+Actual temp [°C]            20.8 °C                                                                                                                                                                  
+8.9cess temp [°C]           21.4 °C                                                                                                                                                                  
+4ead temp [°C]              20.4 °C                                                                                                                                                                  
+2ox temp [°C]               29.1 °C                                                                                                                                                                  
+Emissivity [-]                1.000                                                                                                                                                                  
+Transmission [-]              1.000                                                                                                                                                                  
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+                                                                                                                                                                                                     
+55229 burst | 536516305/bad: 43669/1 | bytes: 624312 | age: 0.1s                                                                                                                                     
+MQTT: OK                                                                                                                                                                                             
+Serial: OK                                                           
+```
