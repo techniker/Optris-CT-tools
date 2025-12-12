@@ -4,18 +4,14 @@ This code decodes a continuous Optris CT sensor data stream and publishes all va
 
 The script is hardened for unattended operation, so for continous logging operations. 
 
-The sensor must already be configured to run in **burst mode** with the **burst string**:
 
-```text
-Burst-String = [1,4,2,3,5,6]
-```
 ---
 
 **1. Protocol Overview**
 1.1 Physical Interface
 
 The script expects the Optris CT to be connected via serial interface:
-(e.g. /dev/ttyUSB0, /dev/tty.usbserial-5)
+(e.g. /dev/ttyUSB0)
 or native RS-232 / RS-485 bridged into a serial device
 
 **Default parameters** are:
@@ -59,12 +55,14 @@ each decoded frame produces payloads with scalar values.
 
 The individual topics are:
 
-```/optris/ct01/process_temperature
-/optris/ct01/actual_temperature
-/optris/ct01/head_temperature
-/optris/ct01/box_temperature
-/optris/ct01/emissivity
-/optris/ct01/transmission
+```
+<base-topic>/process_temperature
+<base-topic>/actual_temperature
+<base-topic>/head_temperature
+<base-topic>/box_temperature
+<base-topic>/emissivity
+<base-topic>/transmission
+
 ```
 
 
@@ -75,12 +73,15 @@ with payload, e.g.:
 
 ```
 {
-  "process_temperature": 22.8,
-  "actual_temperature": 22.8,
-  "head_temperature": 22.2,
-  "box_temperature": 29.3,
-  "emissivity": 1.0,
-  "transmission": 1.0
+  "ts": 1733945812.345,
+  "values": {
+    "process_temperature": 50.5,
+    "actual_temperature": 50.4,
+    "head_temperature": 39.3,
+    "box_temperature": 21.8,
+    "emissivity": 1.0,
+    "transmission": 1.0
+  }
 }
 ```
 
@@ -100,15 +101,65 @@ And optional curses support.
 
 ```pip install pyserial paho-mqtt```
 
+Run:
+```
+python3 optris-ct.py \
+  --serial /dev/ttyUSB0 \
+  --mode burst \
+  --set-burst \
+  --publish-json \
+  --mqtt-broker mqtt.yourbroker.net \
+  --mqtt-username 'user' \
+  --mqtt-password 'password'
 
 ```
-python3 optris-ct.py /dev/tty.usbserial-XXX \
-  --baudrate 9600 \
-  --broker mqtt.yourserver.net \
-  --port 1883 \
-  --username YOUR_MQTT_USER \
-  --password YOUR_MQTT_PASS \
-  --topic /optris/ct01
-  ```
-  
-  For a UI add   ```--UI```
+**5. Program Configuration**
+
+Serial configuration:
+
+| Option        | Description                                               |
+| ------------- | --------------------------------------------------------- |
+| `--serial`    | Serial device path (e.g. `/dev/ttyUSB0`, `/dev/ttyACM0`)  |
+| `--baud`      | Baud rate (default: `9600`)                               |
+| `--multidrop` | RS-485 multidrop address `1…79` (optional, default: none) |
+
+Protocol Operation Mode:
+
+| Option   | Description                                            |
+| -------- | ------------------------------------------------------ |
+| `--mode` | Select read mode: `burst` or `poll` (default: `burst`) |
+
+Burst Configuration:
+
+| Option        | Description                                     |
+| ------------- | ----------------------------------------------- |
+| `--burst`     | Burst half-byte list (default: `1,4,2,3,5,6`)   |
+| `--set-burst` | Program the burst configuration into the sensor |
+
+
+```
+Polling: --mode poll --poll-interval 0.2
+```
+
+
+| Option             | Description                               |
+| ------------------ | ----------------------------------------- |
+| `--mqtt-broker`    | MQTT broker hostname                      |
+| `--mqtt-port`      | MQTT port (default: `1883`)               |
+| `--mqtt-username`  | MQTT username                             |
+| `--mqtt-password`  | MQTT password                             |
+| `--mqtt-topic`     | Base MQTT topic (default: `/optris/ct01`) |
+| `--mqtt-client-id` | MQTT client ID                            |
+| `--retain`         | Set retain flag on published messages     |
+
+| Option                | Description                            |
+| --------------------- | -------------------------------------- |
+| `--publish-json`      | Publish all values as one JSON message |
+| `--publish-per-field` | Publish each value to its own topic    |
+| `--publish-interval`  | Minimum publish interval in seconds    |
+
+| Option        | Description                       |
+| ------------- | --------------------------------- |
+| `--ui curses` | Full-screen terminal UI (default) |
+| `--ui plain`  | Line-based console output         |
+| `--ui none`   | No local output                   |
